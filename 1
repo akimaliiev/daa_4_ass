@@ -1,0 +1,249 @@
+#include <iostream>
+#include <cmath>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+
+using namespace std;
+
+int main()
+{
+    int size;
+    cin >> size;
+    int mountains[size][size];
+    int peaks_count = sqrt(size);
+    int peaks_x[peaks_count];
+    int peaks_y[peaks_count];
+    bool check_x, check_y;
+    int lakeVolume = 0;
+    int lakeVolumeArray[100];
+    int lakeVolumeArrayIndex = 0;
+
+    for (int i = 0; i < 100; i++)
+    {
+        lakeVolumeArray[i] = 0;
+    }
+
+    // cout << rand() % size << endl;
+    // cout << rand() % size << endl;
+    // cout << rand() % size << endl;
+    // cout << rand() % size << endl;
+    // cout << rand() % size << endl;
+    // cout << rand() % size << endl;
+    // cout << rand() % size << endl;
+    // cout << rand() % size << endl;
+    // cout << rand() % size << endl;
+    // cout << rand() % size << endl;
+    // cout << rand() % size << endl;
+
+
+    srand(time(NULL));
+    for (int i = 0; i < peaks_count; i++)
+    {
+        // peaks_x[i] = rand() % size - ((size - (size / 4)) / 2);
+        peaks_x[i] = rand() % size;
+        // peaks_y[i] = rand() % size - ((size - (size / 4)) / 2);
+        peaks_y[i] = rand() % size;
+    }
+    cout << peaks_count << endl;
+
+    for (int i = 0; i < peaks_count; i++)
+    {
+        cout << "Peaks x: " <<  peaks_x[i] << " Peaks y: " << peaks_y[i] << endl;
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            mountains[i][j] = 0;
+        }
+    }
+
+    for (int i = 0; i < peaks_count; i++)
+    {
+        mountains[*(peaks_x + i)][*(peaks_y + i)] = 1;
+    }
+
+    int x_index = 0;
+    int y_index = 0;
+    bool x_check_index;
+    bool y_check_index;
+
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            for (int k = 0; k < peaks_count; k++)
+            {
+                if (i == peaks_x[k])
+                {
+                    x_check_index = true;
+                    break;
+                }
+            }
+
+            for (int k = 0; k < peaks_count; k++)
+            {
+                if (j == peaks_y[k])
+                {
+                    y_check_index = true;
+                    break;
+                }
+            }
+
+            if (mountains[i][j] == 1 && x_check_index && y_check_index)
+            {
+                // for (int k = i; k < size; k++)
+                // {
+                //     // if (k == size)
+                //     // {
+                //     //     break;
+                //     // }
+                //     mountains[k][k] = 1;
+                //     // cout << "test" << " ";
+                // }
+
+                //for (int k = i, l = j; k < size, l < size; k++, l++)
+                for (int k = i, l = j;; k++, l++)
+                {
+                    if (k == size || l == size)
+                    {
+                        break;
+                    }
+                    mountains[k][l] = 1;
+                }
+
+                // for (int k = i, l = j; k < size, l >= 0; k++, l--)
+                for (int k = i, l = j;; k++, l--)
+                {
+                    if (k == size || l == 0)
+                    {
+                        break;
+                    }
+                    mountains[k][l] = 1;
+                }
+
+                x_index++;
+                y_index++;
+                cout << "x = " << x_index << " y = " << x_index << endl;
+
+                // for (int k = i; k >= 0; k--)
+                // {
+                //     mountains[k][k] = 1;
+                // }
+                // cout << "newTest" << endl;
+                // cout << endl;
+            }
+
+            x_check_index = false;
+            y_check_index = false;
+            
+        }
+    }
+
+    cout << "newnewtest" << endl;
+
+    for (int j = 0; j < size; j++)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            if (mountains[i][j] == 1)
+            {
+                for (int k = i; k < size; k++)
+                {
+                    mountains[k][j] = 1;
+                }
+            }
+        }
+    }
+
+    cout << "verynew" << endl;
+
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            cout << mountains[i][j];
+        }
+        cout << endl;
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        // cout << "i = " << i << endl;
+        for (int j = 0; j < size; j++)
+        {
+            // cout << "j = " << j << endl;
+            if (mountains[i][j] == 1)
+            {
+                // cout << "Voshel " << j << " i = " << i << endl;
+                for (int k = i; k < size; k++)
+                {
+                    // cout << "k = " << k << endl;
+                    for (int l = j; l >= 0; l--)
+                    {
+                        // cout << "l = " << l << endl;
+                        if (mountains[k][l] == 0)
+                        {
+                            // cout << "epta" << endl;
+                            lakeVolume++;
+                        }
+                    }
+                }
+
+                // cout << j << "whyNotWorking" << endl;
+
+                lakeVolumeArray[lakeVolumeArrayIndex] = lakeVolume;
+                lakeVolumeArrayIndex++;
+                lakeVolume = 0;
+
+                for (int k = i; k < size; k++)
+                {
+                    // cout << "k = " << k << endl;
+                    for (int l = j; l < size; l++)
+                    {
+                        // cout << "l = " << l << endl;
+                        if (mountains[k][l] == 0)
+                        {
+                            // cout << "test" << endl;
+                            lakeVolume++;
+                        }
+                    }
+                }
+                lakeVolumeArray[lakeVolumeArrayIndex] = lakeVolume;
+                lakeVolumeArrayIndex++;
+                lakeVolume = 0;         
+            }
+        }
+    }
+
+    cout << "done" << endl;
+
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            cout << mountains[i][j];
+        }
+        cout << endl;
+    }
+
+    cout << "done2" << endl;
+
+    int maxLakeVolume = lakeVolumeArray[0];
+    lakeVolumeArrayIndex = 0;
+
+    while (lakeVolumeArray[lakeVolumeArrayIndex] != 0)
+    {
+        if (lakeVolumeArray[lakeVolumeArrayIndex] > maxLakeVolume)
+        {
+            maxLakeVolume = lakeVolumeArray[lakeVolumeArrayIndex];
+        }
+        lakeVolumeArrayIndex++;
+    }
+
+    cout << "done3" << endl;
+
+    cout << "Max lake volume = " << maxLakeVolume << endl;
+}
