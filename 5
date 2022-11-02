@@ -1,1 +1,12 @@
 done
+We have array with N*N, so ups and downs could be approximated to N
+*For each step, the camel spends 1 unit of water;
+water--;
+*if at the same time it rises higher, then it spends another 1 unit of water (two times more water);
+if(a[i][j]<a[i+L][j+H]);
+water -=2;
+*At the points of the local minimum, it is filled with 10 units of water;
+isMinimum = false
+if(a[i][j]<a[i+L][j+H]) then
+isMinimum = true;
+water += 10;
